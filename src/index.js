@@ -40,6 +40,7 @@ client.rest.on(RESTEvents.RateLimited, async (r) => {
         0
       )} seconds.}`
     );
+
   await webhook.send({ embeds: [embed] });
 });
 eventHandler(client);
