@@ -1,9 +1,13 @@
+const { PermissionFlagsBits } = require("discord.js");
+
 const { LOGS_CHANNEL_ID } = process.env;
 
 module.exports = async (client, message) => {
   if (message.guild?.id !== process.env.GUILD_ID) return;
 
   if (message.content.startsWith("!dm")) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator))
+      return;
     const mentionedUser = message.mentions.users.first();
     if (!mentionedUser) {
       return message.reply("Please mention a user to send the message to.");
