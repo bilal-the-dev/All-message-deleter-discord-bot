@@ -19,6 +19,10 @@ module.exports = {
     try {
       const targetUser = interaction.options.getUser("target-user");
 
+      // Fetch the user’s document containing their messages
+      const userMessages = await UserMessagesModel.findOne({
+        userId: targetUser.id,
+      });
       await interaction.deferReply();
 
       if (!targetUser) {
@@ -29,11 +33,6 @@ module.exports = {
       }
 
       const { channel } = interaction;
-
-      // Fetch the user’s document containing their messages
-      const userMessages = await UserMessagesModel.findOne({
-        userId: targetUser.id,
-      });
 
       if (!userMessages || userMessages.messages.length === 0) {
         return interaction.editReply({
