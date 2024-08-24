@@ -66,7 +66,9 @@ module.exports = {
         { $set: { messages: [] } }
       );
 
-      await m.edit(`Total messages deleted: \`${totalDeleted}\``);
+      await m.edit(
+        `Total messages deleted for ${targetUser}: \`${totalDeleted}\``
+      );
 
       // // Create and send log embed
       // const logEmbed = new EmbedBuilder()
