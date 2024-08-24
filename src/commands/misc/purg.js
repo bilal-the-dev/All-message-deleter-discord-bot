@@ -41,7 +41,9 @@ module.exports = {
         });
       }
 
-      await interaction.deleteReply();
+      await interaction.editReply(
+        `Purge command ran by ${interaction.user} to delete ${targetUser} messages`
+      );
 
       let totalDeleted = 0;
       const m = await channel.send(
