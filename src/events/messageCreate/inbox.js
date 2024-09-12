@@ -1,12 +1,15 @@
 const { PermissionFlagsBits } = require("discord.js");
 
-const { LOGS_CHANNEL_ID } = process.env;
+const { LOGS_CHANNEL_ID, MOD_ROLE_ID } = process.env;
 
 module.exports = async (client, message) => {
   if (message.guild?.id !== process.env.GUILD_ID) return;
 
   if (message.content.startsWith("!dm")) {
-    if (!message.member.permissions.has(PermissionFlagsBits.Administrator))
+    if (
+      !message.member.permissions.has(PermissionFlagsBits.Administrator) &&
+      !message.member.roles.cache.has(MOD_ROLE_ID)
+    )
       return;
     const mentionedUser = message.mentions.users.first();
     if (!mentionedUser) {
