@@ -24,7 +24,7 @@ module.exports = async (client, message) => {
       mentionedUserIDs.push(match[1]); // match[1] contains the userID
     }
 
-    if (mentionedUserIDs.size === 0) {
+    if (mentionedUserIDs === 0) {
       return message.reply(
         "Please mention at least one user to send the message to."
       );
