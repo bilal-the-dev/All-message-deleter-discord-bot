@@ -12,6 +12,13 @@ module.exports = async (client, message) => {
     )
       return;
 
+    const contentIndex = message.content.indexOf(`"`);
+
+    if (contentIndex === -1)
+      return message.reply(
+        `Please make sure the message is wrapped inside "" (quotation) mark`
+      );
+
     const contentBeforeActualMsg = message.content.slice(
       0,
       message.content.indexOf(`"`)
