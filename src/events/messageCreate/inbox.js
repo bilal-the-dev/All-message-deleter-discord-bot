@@ -14,11 +14,6 @@ module.exports = async (client, message) => {
 
     const contentIndex = message.content.indexOf(`"`);
 
-    if (contentIndex === -1)
-      return message.reply(
-        `Please make sure the message is wrapped inside "" (quotation) mark`
-      );
-
     const contentBeforeActualMsg = message.content.slice(
       0,
       message.content.indexOf(`"`)
@@ -36,6 +31,11 @@ module.exports = async (client, message) => {
         "Please mention at least one user to send the message to."
       );
     }
+
+    if (contentIndex === -1)
+      return message.reply(
+        `Please make sure the message is wrapped inside "" (quotation) mark`
+      );
 
     const mentionedUsers = await Promise.all(
       mentionedUserIDs.map((id) => message.client.users.fetch(id))
