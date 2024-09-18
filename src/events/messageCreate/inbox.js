@@ -12,16 +12,33 @@ module.exports = async (client, message) => {
     )
       return;
 
-    const mentionedUsers = message.mentions.users;
-    if (mentionedUsers.size === 0) {
+    const contentBeforeActualMsg = message.content.slice(
+      0,
+      message.content.indexOf(`"`)
+    );
+    const mentionRegex = /<@!?(\d+)>/g;
+
+    const mentionedUserIDs = [];
+    let match;
+    while ((match = mentionRegex.exec(contentBeforeActualMsg)) !== null) {
+      mentionedUserIDs.push(match[1]); // match[1] contains the userID
+    }
+
+    if (mentionedUserIDs.size === 0) {
       return message.reply(
         "Please mention at least one user to send the message to."
       );
     }
 
-    const messageContent = message.content.slice(
-      message.content.indexOf(" ", message.content.indexOf(">")) + 1
+    const mentionedUsers = await Promise.all(
+      mentionedUserIDs.map((id) => message.client.users.fetch(id))
     );
+
+    console.log(contentBeforeActualMsg);
+
+    const messageContent = message.content
+      .slice(message.content.indexOf(`"`) + 1)
+      .replace(`"`, "");
 
     if (!messageContent.trim()) {
       return message.reply("Please include a message to send.");
@@ -65,7 +82,7 @@ module.exports = async (client, message) => {
     const successfulDMs = [];
     const failedDMs = [];
 
-    for (const [userId, user] of mentionedUsers) {
+    for (const user of mentionedUsers) {
       try {
         await user.send({ embeds: [embed] });
         if (message.attachments.size > 0) {
@@ -106,7 +123,7 @@ module.exports = async (client, message) => {
           },
           {
             name: "Recipients",
-            value: mentionedUsers.map((user) => `<@${user.id}>`).join(", "),
+            value: mentionedUserIDs.map((user) => `<@${user.id}>`).join(", "),
             inline: true,
           },
           {
