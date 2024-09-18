@@ -130,7 +130,7 @@ module.exports = async (client, message) => {
           },
           {
             name: "Recipients",
-            value: mentionedUserIDs.map((user) => `<@${user.id}>`).join(", "),
+            value: mentionedUserIDs.map((id) => `<@${id}>`).join(", "),
             inline: true,
           },
           {
